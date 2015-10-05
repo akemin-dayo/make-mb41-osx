@@ -9,7 +9,7 @@ make-mb41-osx
 * [10.11 only] USB is complete broken on OS X 10.11. It's an issue with AppleUSBEHCIPCI, looking into fixing this. Will take some time.
 
 ###What works?
-* Well... everything else. :P This includes FaceTime/iMessage/parts of Continuity (SMS Forwarding, iPhone phone call forwarding), too!
+* Well... everything else. :P **This includes FaceTime/iMessage/parts of Continuity (SMS Forwarding, iPhone phone call forwarding), too!**
 
 ###To-do
 * Add feature for user to disable beamsync (`beamsyncoff`)
