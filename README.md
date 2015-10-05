@@ -1,5 +1,5 @@
 make-mb41-osx
-============
+=============
 ###### OS X 10.10/10.11 installer creator for MacBook4,1 (Mac-F22788A9)
 
 ###What doesn't work?
@@ -67,3 +67,5 @@ Before we begin, I want to make it clear that this tool should only be used by t
     * `make-mb41-osx` does not yet make Recovery HD work. I'm working on that.
 * **My 10.11 El Capitan installer isn't booting! All I see is a gray screen with a cross!**
     * USB support is currently broken for the MacBook4,1 under 10.11 at this time. Therefore, the installer cannot boot from the USB, as it doesn't even detect the USB to begin with. I'm working on this, the issue lies in `AppleUSBEHCIPCI.kext`.
+* **I updated to 10.11 El Capitan and now my USB ports don't work!**
+    * USB doesn't work under 10.11 yet. Reinstall 10.10 for now.
