@@ -129,7 +129,7 @@
 	sed -i '' -e 's/\<string>MacBookAir5,1\<\/string\>/\<string>MacBookAir5,1\<\/string\>\<string>MacBook4,1\<\/string\>/g' "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
 	plutil -convert xml1 "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
 
-	# TODO: inject kext-dev-mode=1 into com.apple.boot.plist to ensure kext load for Installer (for those who do not have it added into their nvram boot-arg var)
+	plutil -replace "Kernel Flags" -string "kext-dev-mode=1" "/Volumes/Install OS X $targetOSX/Library/Preferences/SystemConfiguration/com.apple.Boot.plist"
 
 	# eject InstallESD, we don't need it anymore
 	diskutil eject "/Volumes/OS X Install ESD"
@@ -168,7 +168,7 @@ chown -Rv root:wheel \"/Volumes/\$diskname/System/Library/Extensions/AppleHDA.ke
 chown -Rv root:wheel \"/Volumes/\$diskname/System/Library/Extensions/NoSleep.kext\"
 touch \"/Volumes/\$diskname/System/Library/Extensions/\"
 nvram boot-args=\"kext-dev-mode=1 mbasd=1\"
-# TODO: modify com.apple.boot.plist to always inject kext-dev-mode=1 in case of NVRAM reset or other catastrophic event
+plutil -replace \"Kernel Flags\" -string \"kext-dev-mode=1\" \"/Volumes/\$diskname/Library/Preferences/SystemConfiguration/com.apple.Boot.plist\"
 echo Done. You may now quit Terminal and reboot." > "/Volumes/Install OS X $targetOSX/postinst.sh"
 	chmod +x "/Volumes/Install OS X $targetOSX/postinst.sh"
 	diskutil disableOwnership /dev/disk$partnum
