@@ -9,7 +9,7 @@ make-mb41-osx
 * [10.11 only] USB is complete broken on OS X 10.11. It's an issue with AppleUSBEHCIPCI, looking into fixing this. Will take some time.
 
 ###What works?
-* Well... everything else. :P
+* Well... everything else. :P This includes FaceTime/iMessage/parts of Continuity (SMS Forwarding, iPhone phone call forwarding), too!
 
 ###To-do
 * Add feature for user to disable beamsync (`beamsyncoff`)
@@ -18,6 +18,13 @@ make-mb41-osx
 * Add feature to make Recovery HD usable for MacBook4,1 (important for 10.11!)
 * [10.11] Fix USB (AppleUSBEHCIPCI)
 * [10.10] Add script that disables Mission Control animations
+
+###How is the performance?
+I currently am running OS X Yosemite 10.10.5 as a daily driver on my MacBook4,1. Performance is pretty good, actually. Performing the "Post-installation steps" at the end of the tutorial is a good idea.
+
+I'm rather satisfied with it, actually. Video playback is pretty decent with MPlayerX, and YouTube videos also works fine. I will say that YouTube videos play a lot better in Safari than in Chrome — Chrome tends to framedrop quite a bit.
+
+Simple OpenGL games like VVVVVV and Super Hexagon run fine, but I won't expect too much from this.
 
 ###Okay, so how do I use this?
 Before we begin, I want to make it clear that this tool should only be used by those who are comfortable working with the Terminal, and have some degree of experience with OS X.
@@ -48,6 +55,7 @@ Before we begin, I want to make it clear that this tool should only be used by t
 1. Set up OS X as you would normally.
 1. To improve performance, I recommend that you disable Beam Sync. A number of tools can do this, including "BeamOff" and "BeamSyncDropper2". Use Google, I guess.
 1. To make Mission Control usable (and prevent it from crashing WindowServer), I recommend that you disable its animations. You can do that by pasting this into Terminal: `defaults write com.apple.dock expose-animation-duration -float 0; killall Dock`
+1. Enable "Reduce Transparency" in Settings -> Accessibility.
 
 ### Troubleshooting
 
