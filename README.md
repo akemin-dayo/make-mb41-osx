@@ -46,7 +46,7 @@ Before we begin, I want to make it clear that this tool should only be used by t
 1. Wait for a bit.
 1. **When the process is nearly complete, start paying attention.**
 1. **When the installer starts counting down until a reboot, quickly go to the menubar and go to Utilities -> Terminal**
-1. `cd /Volumes/Install OS X Yosemite/` (or `El Capitan`)
+1. `cd "/Volumes/Install OS X Yosemite/"` (or `El Capitan`)
 1. `sh postinst.sh`
 1. Enter in the **disk name** of the disk in which you installed OS X to.
 1. Quit Terminal, and allow your MacBook4,1 to reboot into your freshly-installed OS X.
