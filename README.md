@@ -62,8 +62,10 @@ Simple OpenGL games like VVVVVV and Super Hexagon run fine, but really, don't ex
 1. To make Mission Control actually usable (and to prevent it from potentially crashing WindowServer), I recommend that you disable its animations. You can do that by pasting this into Terminal: `defaults write com.apple.dock expose-animation-duration -float 0; killall Dock`
 1. Enable "Reduce Transparency" in Settings -> Accessibility.
 
-### Troubleshooting
+### Troubleshooting/FAQs
 
+* **What's a MacBook4,1?**
+    * All of these polycarbonate White/Black MacBooks: http://www.everymac.com/ultimate-mac-lookup/?search_keywords=MacBook4,1
 * **I didn't make it in time to run `postinst.sh` and my MacBook4,1 rebooted into a gray screen with a cross on it! D:**
     * That's okay, just boot from the USB installer again, and perform those steps again. Your OS X install has not been harmed :P
 * **I updated OS X and now all I see is a gray screen with a cross!**
