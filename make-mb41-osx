@@ -98,13 +98,13 @@
 	cp -rv "/Volumes/OS X Install ESD/BaseSystem.chunklist" "/Volumes/Install OS X $targetOSX/"
 
 	# un-xar OSInstall.mpkg
-	mkdir "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp/"
+	mkdir -v "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp/"
 	cd "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp/"
 	xar -xvf "/Volumes/Install OS X $targetOSX/System/Installation/Packages/OSInstall.mpkg"
 	# modify isSupportedPlatform() to always return true
 	sed -i '' -e 's/function isSupportedPlatform(){/function isSupportedPlatform(){ return true;/g' "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp/Distribution"
 	# re-xar OSInstall.mpkg
-	rm "/Volumes/Install OS X $targetOSX/System/Installation/Packages/OSInstall.mpkg"
+	rm -v "/Volumes/Install OS X $targetOSX/System/Installation/Packages/OSInstall.mpkg"
 	xar -cvf "/Volumes/Install OS X $targetOSX/System/Installation/Packages/OSInstall.mpkg" *
 	cd "$restore"
 	rm -rfv "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp"
@@ -149,7 +149,7 @@
 	touch "/Volumes/Install OS X $targetOSX/System/Library/Extensions/"
 
 	# add kexts to postinst step
-	cp $payload "/Volumes/Install OS X $targetOSX/payload.tar.gz"
+	cp -v $payload "/Volumes/Install OS X $targetOSX/payload.tar.gz"
 
 	# create postinst.sh
 	echo "#!/bin/sh
@@ -170,7 +170,7 @@ touch \"/Volumes/\$diskname/System/Library/Extensions/\"
 nvram boot-args=\"kext-dev-mode=1 mbasd=1\"
 plutil -replace \"Kernel Flags\" -string \"kext-dev-mode=1\" \"/Volumes/\$diskname/Library/Preferences/SystemConfiguration/com.apple.Boot.plist\"
 echo Done. You may now quit Terminal and reboot." > "/Volumes/Install OS X $targetOSX/postinst.sh"
-	chmod +x "/Volumes/Install OS X $targetOSX/postinst.sh"
+	chmod -v +x "/Volumes/Install OS X $targetOSX/postinst.sh"
 	diskutil disableOwnership /dev/disk$partnum
 
 	echo Done. You may now eject and remove the USB.
