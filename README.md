@@ -6,7 +6,7 @@ make-mb41-osx
 * Brightness control — I found the PCI register that controls brightness, but running `setpci` on it seems to do nothing. Still looking into it, hopefully I can solve this.
 * X3100 QECI acceleration — OS X is still very usable without this, because the X3100 framebuffer still works. So you will still be able to use change resolutions, external displays, and use all 144MB of VRAM, etc.
 * Display wake from sleep — Sleeping and waking works, but the display will remain off. This is likely due to QECI acceleration not being present.
-* [10.11 only] USB is completey broken on OS X 10.11 (works fine on 10.10). It's an issue with AppleUSBEHCIPCI, looking into fixing this. Will take some time.
+* [10.11 only] USB is completely broken on OS X 10.11 (works fine on 10.10). It's an issue with AppleUSBEHCIPCI, looking into fixing this. Will take some time.
 
 ###What works?
 * Well... everything else. :P **This includes FaceTime/iMessage/parts of Continuity (SMS Forwarding, iPhone phone call forwarding), too!**
@@ -53,7 +53,7 @@ Before we begin, I want to make it clear that this tool should only be used by t
 
 #### Post-installation steps (recommended, but optional)
 1. Set up OS X as you would normally.
-1. To improve performance, I recommend that you disable Beam Sync. A number of tools can do this, including "BeamOff" and "BeamSyncDropper2". Use Google, I guess.
+1. To improve performance, I recommend that you disable Beam Sync. A number of tools can do this, including "BeamOff" and "BeamSyncDropper2". Use Google to find them.
 1. To make Mission Control usable (and prevent it from crashing WindowServer), I recommend that you disable its animations. You can do that by pasting this into Terminal: `defaults write com.apple.dock expose-animation-duration -float 0; killall Dock`
 1. Enable "Reduce Transparency" in Settings -> Accessibility.
 
