@@ -154,7 +154,11 @@
 	# create postinst.sh
 	echo "#!/bin/sh
 ls -1 /Volumes/
-read -p \"Enter the name of the disk on which you installed OS X $targetOSX: \" diskname
+read -p \"Enter the name of the disk on which you installed OS X $targetOSX:\" diskname
+if [ ! -d \"/Volumes/\$diskname\" ]; then
+	echo \"\033[31mFATAL ERROR: /Volumes/\$diskname does not seem to exist. Try again.\033[0m\"
+	exit 1
+fi
 rm -v \"/Volumes/\$diskname/System/Library/CoreServices/PlatformSupport.plist\"
 rm -rfv \"/Volumes/\$diskname/System/Library/Extensions/AppleHDA.kext\"
 tar xzvf \"/Volumes/Install OS X $targetOSX/payload.tar.gz\" -C \"/Volumes/\$diskname/System/Library/Extensions/\"
@@ -173,5 +177,5 @@ echo Done. You may now quit Terminal and reboot." > "/Volumes/Install OS X $targ
 	chmod -v +x "/Volumes/Install OS X $targetOSX/postinst.sh"
 	diskutil disableOwnership /dev/disk$partnum
 
-	echo Done. You may now eject and remove the USB.
+	echo Done. You may now eject and remove the USB drive.
 }
