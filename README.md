@@ -5,7 +5,7 @@ make-mb41-osx
 ###What doesn't work?
 * Brightness control — I found the PCI register that controls brightness, but I haven't been able to actually set the brightness yet. Still looking into it.
 * X3100 QECI acceleration — **OS X is still very usable without this, because the X3100 framebuffer still works.** So you will still be able to use change resolutions, external displays, and use all 144MB of VRAM, etc.
-* Display wake from sleep — Sleeping and waking works, but the display will remain off. Not sure what causes this yet, it's either due to the missing QECI acceleration, or lack of backlight control. Or both.
+* Display wake from sleep — Sleeping and waking works, but graphics completely fail to re-initialise. Probably something to do with missing QECI acceleration.
 * [10.11 only] USB is completely broken on OS X 10.11. It's an issue with AppleUSBEHCIPCI, I have a few ideas I'm going to test regarding this.
 
 ###Okay, what works?
