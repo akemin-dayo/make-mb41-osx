@@ -32,6 +32,8 @@ I will say that YouTube videos perform better under Safari than in Chrome. If yo
 
 Simple OpenGL games like VVVVVV and Super Hexagon run fine, but really, don't expect anything too complex from this. (I mean, even if it *did* have QECI acceleration, it *is* still a GMA X3100...)
 
+On a slightly entertaining note, Parallels Desktop 11 (running Windows 10) performs decently, too. I actually did not expect this :P
+
 ###Okay, so how do I use this?
 
 #### Preparing the installer USB
