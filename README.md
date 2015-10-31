@@ -24,11 +24,7 @@ make-mb41-osx
 ###How does it perform?
 I actually am currently running OS X Yosemite 10.10.5 as a daily driver on my MacBook4,1. Performance is actually very good. I do recommend that you perform the "Post-installation steps" at the end of my tutorial below for best results.
 
-But anyway, I'm rather satisfied with the performance. Video playback is fine with MPlayerX (or VLC... -shudders-), and web videos (such as YouTube) also decode fine.
-
-However — if you use Google Chrome, I really recommend that you use Safari to watch web videos instead. Chrome, for some reason, performs pretty poorly when decoding video (h264ify doesn't really help).
-
-That doesn't mean you can't use Chrome — Chrome's fine... just not when it comes to video decoding :P
+But anyway, I'm rather satisfied with the performance. Video playback is fine with MPlayerX (or VLC... -shudders-), and web videos (such as YouTube) also decode fine (on both Chrome 46.0.2490.80 and Safari 9.0.1).
 
 Simpler OpenGL games like VVVVVV and Super Hexagon run at full speed (60 FPS), but really, don't expect too much. (I mean, even if it *did* have QECI acceleration, it *is* still a GMA X3100...)
 
