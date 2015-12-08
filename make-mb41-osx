@@ -80,7 +80,7 @@
 	diskutil partitionDisk /dev/disk$disknum GPT JHFS+ USBInstaller 0b
 	# mount target installesd
 	diskutil eject "/Volumes/OS X Install ESD"
-	hdiutil attach -noautoopen -noautoopenro -noautoopenrw -nobrowse "/Applications/Install OS X $targetOSX.app/Contents/SharedSupport/InstallESD.dmg"
+	hdiutil attach -nobrowse "/Applications/Install OS X $targetOSX.app/Contents/SharedSupport/InstallESD.dmg"
 	# asr restore basesystem
 	diskutil unmount force /dev/disk$partnum
 	asr restore --erase --noprompt --source "/Volumes/OS X Install ESD/BaseSystem.dmg" --target /dev/disk$partnum
