@@ -30,19 +30,11 @@
 	fi
 
 	if [[ $1 == 10.10 ]]; then
-		if [ ! -d "/Applications/Install OS X Yosemite.app" ]; then
-			echo "\033[31mFATAL ERROR: /Applications/Install OS X Yosemite.app not found! Please download it from the App Store.\033[0m"
-			exit 1
-		fi
-		targetOSX=Yosemite
+		targetOSX="OS X Yosemite"
 	fi
 
 	if [[ $1 == 10.11 ]]; then
-		if [ ! -d "/Applications/Install OS X El Capitan.app" ]; then
-			echo "\033[31mFATAL ERROR: /Applications/Install OS X El Capitan.app not found! Please download it from the App Store.\033[0m"
-			exit 1
-		fi
-		targetOSX="El Capitan"
+		targetOSX="OS X El Capitan"
 		echo "\033[31mWARNING: OS X 10.11 El Capitan USB installers will not be able to properly boot on the MacBook4,1!\033[0m"
 		echo "\033[31mThis is because USB support (AppleUSBEHCIPCI) is currently broken for the MacBook4,1.\033[0m"
 		echo "\033[31mIn other words, there is almost no point in creating a 10.11 installer USB at this time.\033[0m"
@@ -55,6 +47,11 @@
 			echo ""
 			exit 0
 		fi
+	fi
+
+	if [ ! -d "/Applications/Install $targetOSX.app" ]; then
+		echo "\033[31mFATAL ERROR: /Applications/Install $targetOSX.app not found! Please download it from the App Store.\033[0m"
+		exit 1
 	fi
 
 	restore=$PWD
@@ -80,88 +77,88 @@
 	diskutil partitionDisk /dev/disk$disknum GPT JHFS+ USBInstaller 0b
 	# mount target installesd
 	diskutil eject "/Volumes/OS X Install ESD"
-	hdiutil attach -nobrowse "/Applications/Install OS X $targetOSX.app/Contents/SharedSupport/InstallESD.dmg"
+	hdiutil attach -nobrowse "/Applications/Install $targetOSX.app/Contents/SharedSupport/InstallESD.dmg"
 	# asr restore basesystem
 	diskutil unmount force /dev/disk$partnum
 	asr restore --erase --noprompt --source "/Volumes/OS X Install ESD/BaseSystem.dmg" --target /dev/disk$partnum
 	# mount basesystem
 	diskutil mount /dev/disk$partnum
 	# rename basesystem
-	diskutil rename "/Volumes/OS X Base System/" "Install OS X $targetOSX"
+	diskutil rename "/Volumes/OS X Base System/" "Install $targetOSX"
 	# delete ESD symlink
-	rm -f "/Volumes/Install OS X $targetOSX/System/Installation/Packages"
+	rm -f "/Volumes/Install $targetOSX/System/Installation/Packages"
 	# copy ESD packages
-	cp -rv "/Volumes/OS X Install ESD/Packages" "/Volumes/Install OS X $targetOSX/System/Installation/"
+	cp -rv "/Volumes/OS X Install ESD/Packages" "/Volumes/Install $targetOSX/System/Installation/"
 
 	# copy BaseSystem to avoid errors when installer tries to create/update Recovery HD
-	cp -rv "/Volumes/OS X Install ESD/BaseSystem.dmg" "/Volumes/Install OS X $targetOSX/"
-	cp -rv "/Volumes/OS X Install ESD/BaseSystem.chunklist" "/Volumes/Install OS X $targetOSX/"
+	cp -rv "/Volumes/OS X Install ESD/BaseSystem.dmg" "/Volumes/Install $targetOSX/"
+	cp -rv "/Volumes/OS X Install ESD/BaseSystem.chunklist" "/Volumes/Install $targetOSX/"
 
 	# un-xar OSInstall.mpkg
-	mkdir -v "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp/"
-	cd "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp/"
-	xar -xvf "/Volumes/Install OS X $targetOSX/System/Installation/Packages/OSInstall.mpkg"
+	mkdir -v "/Volumes/Install $targetOSX/System/Installation/Packages/mb41-temp/"
+	cd "/Volumes/Install $targetOSX/System/Installation/Packages/mb41-temp/"
+	xar -xvf "/Volumes/Install $targetOSX/System/Installation/Packages/OSInstall.mpkg"
 	# modify isSupportedPlatform() to always return true
-	sed -i '' -e 's/function isSupportedPlatform(){/function isSupportedPlatform(){ return true;/g' "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp/Distribution"
+	sed -i '' -e 's/function isSupportedPlatform(){/function isSupportedPlatform(){ return true;/g' "/Volumes/Install $targetOSX/System/Installation/Packages/mb41-temp/Distribution"
 	# re-xar OSInstall.mpkg
-	rm -v "/Volumes/Install OS X $targetOSX/System/Installation/Packages/OSInstall.mpkg"
-	xar -cvf "/Volumes/Install OS X $targetOSX/System/Installation/Packages/OSInstall.mpkg" *
+	rm -v "/Volumes/Install $targetOSX/System/Installation/Packages/OSInstall.mpkg"
+	xar -cvf "/Volumes/Install $targetOSX/System/Installation/Packages/OSInstall.mpkg" *
 	cd "$restore"
-	rm -rfv "/Volumes/Install OS X $targetOSX/System/Installation/Packages/mb41-temp"
+	rm -rfv "/Volumes/Install $targetOSX/System/Installation/Packages/mb41-temp"
 	# inject macbook4,1 board id
-	plutil -convert xml1 "/Volumes/Install OS X $targetOSX/System/Installation/Packages/InstallableMachines.plist"
-	sed -i '' -e 's/\<string>Mac-F2218EC8\<\/string\>/\<string>Mac-F2218EC8\<\/string\>\<string>Mac-F22788A9\<\/string\>/g' "/Volumes/Install OS X $targetOSX/System/Installation/Packages/InstallableMachines.plist"
+	plutil -convert xml1 "/Volumes/Install $targetOSX/System/Installation/Packages/InstallableMachines.plist"
+	sed -i '' -e 's/\<string>Mac-F2218EC8\<\/string\>/\<string>Mac-F2218EC8\<\/string\>\<string>Mac-F22788A9\<\/string\>/g' "/Volumes/Install $targetOSX/System/Installation/Packages/InstallableMachines.plist"
 	# TODO: figure out a way to do this via plutil
 	# i thought plutil -insert SupportedBoardIds -string "Mac-F22788A9" InstallableMachines.plist would work
 	# apparently it doesn't =_=
 
 	# re-run convert xml1 again to fix the formatting
-	plutil -convert xml1 "/Volumes/Install OS X $targetOSX/System/Installation/Packages/InstallableMachines.plist"
+	plutil -convert xml1 "/Volumes/Install $targetOSX/System/Installation/Packages/InstallableMachines.plist"
 
 	# repeat the process for SupportedPlatforms (oddly enough 10.11 doesn't seem to check modelID anymore, only boardID)
-	plutil -convert xml1 "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
-	sed -i '' -e 's/\<string>Mac-F2218EC8\<\/string\>/\<string>Mac-F2218EC8\<\/string\>\<string>Mac-F22788A9\<\/string\>/g' "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
-	sed -i '' -e 's/\<string>MacBookAir5,1\<\/string\>/\<string>MacBookAir5,1\<\/string\>\<string>MacBook4,1\<\/string\>/g' "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
-	plutil -convert xml1 "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
+	plutil -convert xml1 "/Volumes/Install $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
+	sed -i '' -e 's/\<string>Mac-F2218EC8\<\/string\>/\<string>Mac-F2218EC8\<\/string\>\<string>Mac-F22788A9\<\/string\>/g' "/Volumes/Install $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
+	sed -i '' -e 's/\<string>MacBookAir5,1\<\/string\>/\<string>MacBookAir5,1\<\/string\>\<string>MacBook4,1\<\/string\>/g' "/Volumes/Install $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
+	plutil -convert xml1 "/Volumes/Install $targetOSX/System/Library/CoreServices/PlatformSupport.plist"
 	# do the same for com.apple.recovery.boot
-	plutil -convert xml1 "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
-	sed -i '' -e 's/\<string>Mac-F2218EC8\<\/string\>/\<string>Mac-F2218EC8\<\/string\>\<string>Mac-F22788A9\<\/string\>/g' "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
-	sed -i '' -e 's/\<string>MacBookAir5,1\<\/string\>/\<string>MacBookAir5,1\<\/string\>\<string>MacBook4,1\<\/string\>/g' "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
-	plutil -convert xml1 "/Volumes/Install OS X $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
+	plutil -convert xml1 "/Volumes/Install $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
+	sed -i '' -e 's/\<string>Mac-F2218EC8\<\/string\>/\<string>Mac-F2218EC8\<\/string\>\<string>Mac-F22788A9\<\/string\>/g' "/Volumes/Install $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
+	sed -i '' -e 's/\<string>MacBookAir5,1\<\/string\>/\<string>MacBookAir5,1\<\/string\>\<string>MacBook4,1\<\/string\>/g' "/Volumes/Install $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
+	plutil -convert xml1 "/Volumes/Install $targetOSX/System/Library/CoreServices/com.apple.recovery.boot/PlatformSupport.plist"
 
-	plutil -replace "Kernel Flags" -string "kext-dev-mode=1" "/Volumes/Install OS X $targetOSX/Library/Preferences/SystemConfiguration/com.apple.Boot.plist"
+	plutil -replace "Kernel Flags" -string "kext-dev-mode=1" "/Volumes/Install $targetOSX/Library/Preferences/SystemConfiguration/com.apple.Boot.plist"
 
 	# eject InstallESD, we don't need it anymore
 	diskutil eject "/Volumes/OS X Install ESD"
 
 	# add kexts to installer
 	diskutil enableOwnership /dev/disk$partnum
-	rm -rfv "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleHDA.kext"
-	tar xzvf $payload -C "/Volumes/Install OS X $targetOSX/System/Library/Extensions/"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleIntelGMAX3100.kext"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleIntelGMAX3100FB.kext"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleIntelGMAX3100GA.plugin"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleIntelGMAX3100GLDriver.bundle"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleIntelGMAX3100VADriver.bundle"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleIntelIntegratedFramebuffer.kext"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/AppleHDA.kext"
-	chown -Rv root:wheel "/Volumes/Install OS X $targetOSX/System/Library/Extensions/NoSleep.kext"
-	touch "/Volumes/Install OS X $targetOSX/System/Library/Extensions/"
+	rm -rfv "/Volumes/Install $targetOSX/System/Library/Extensions/AppleHDA.kext"
+	tar xzvf $payload -C "/Volumes/Install $targetOSX/System/Library/Extensions/"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/AppleIntelGMAX3100.kext"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/AppleIntelGMAX3100FB.kext"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/AppleIntelGMAX3100GA.plugin"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/AppleIntelGMAX3100GLDriver.bundle"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/AppleIntelGMAX3100VADriver.bundle"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/AppleIntelIntegratedFramebuffer.kext"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/AppleHDA.kext"
+	chown -Rv root:wheel "/Volumes/Install $targetOSX/System/Library/Extensions/NoSleep.kext"
+	touch "/Volumes/Install $targetOSX/System/Library/Extensions/"
 
 	# add kexts to postinst step
-	cp -v $payload "/Volumes/Install OS X $targetOSX/payload.tar.gz"
+	cp -v $payload "/Volumes/Install $targetOSX/payload.tar.gz"
 
 	# create postinst.sh
 	echo "#!/bin/sh
 ls -1 /Volumes/
-read -p \"Enter the name of the disk on which you installed OS X $targetOSX:\" diskname
+read -p \"Enter the name of the disk on which you installed $targetOSX:\" diskname
 if [ ! -d \"/Volumes/\$diskname\" ]; then
 	echo \"\033[31mFATAL ERROR: /Volumes/\$diskname does not seem to exist. Try again.\033[0m\"
 	exit 1
 fi
 rm -v \"/Volumes/\$diskname/System/Library/CoreServices/PlatformSupport.plist\"
 rm -rfv \"/Volumes/\$diskname/System/Library/Extensions/AppleHDA.kext\"
-tar xzvf \"/Volumes/Install OS X $targetOSX/payload.tar.gz\" -C \"/Volumes/\$diskname/System/Library/Extensions/\"
+tar xzvf \"/Volumes/Install $targetOSX/payload.tar.gz\" -C \"/Volumes/\$diskname/System/Library/Extensions/\"
 chown -Rv root:wheel \"/Volumes/\$diskname/System/Library/Extensions/AppleIntelGMAX3100.kext\"
 chown -Rv root:wheel \"/Volumes/\$diskname/System/Library/Extensions/AppleIntelGMAX3100FB.kext\"
 chown -Rv root:wheel \"/Volumes/\$diskname/System/Library/Extensions/AppleIntelGMAX3100GA.plugin\"
@@ -173,8 +170,8 @@ chown -Rv root:wheel \"/Volumes/\$diskname/System/Library/Extensions/NoSleep.kex
 touch \"/Volumes/\$diskname/System/Library/Extensions/\"
 nvram boot-args=\"kext-dev-mode=1 mbasd=1\"
 plutil -replace \"Kernel Flags\" -string \"kext-dev-mode=1\" \"/Volumes/\$diskname/Library/Preferences/SystemConfiguration/com.apple.Boot.plist\"
-echo Done. You may now quit Terminal and reboot." > "/Volumes/Install OS X $targetOSX/postinst.sh"
-	chmod -v +x "/Volumes/Install OS X $targetOSX/postinst.sh"
+echo Done. You may now quit Terminal and reboot." > "/Volumes/Install $targetOSX/postinst.sh"
+	chmod -v +x "/Volumes/Install $targetOSX/postinst.sh"
 	diskutil disableOwnership /dev/disk$partnum
 
 	echo Done. You may now eject and remove the USB drive.
