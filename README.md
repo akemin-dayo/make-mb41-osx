@@ -2,26 +2,26 @@ make-mb41-osx
 =============
 ###### OS X 10.10/10.11 installer creator for MacBook4,1 (Mac-F22788A9)
 
-###What doesn't work?
+### What doesn't work?
 * Brightness control — I found the PCI register that controls brightness, but I haven't been able to actually set the brightness yet. Still looking into it.
 * X3100 QECI acceleration — **OS X is still very usable without this, because the X3100 framebuffer still works.** So you will still be able to use change resolutions, external displays, and use all 144MB of VRAM, etc.
 * Display wake from sleep — Sleeping and waking works, but graphics completely fail to re-initialise. Probably something to do with missing QECI acceleration.
-* [10.11 only] USB is completely broken on OS X 10.11. It's an issue with AppleUSBEHCIPCI, I have a few ideas I'm going to test regarding this.
+* [10.11 only] USB is completely broken on OS X 10.11. It's an issue with AppleUSBEHCIPCI. Apparently [macosxbootloader](https://github.com/Piker-Alpha/macosxbootloader) works around this on the boot.efi level, should figure out how that works and see if a similar fix will work for the MacBook4,1.
 
-###Okay, what works?
+### Okay, what works?
 * Well... everything else. :P **This includes FaceTime/iMessage/parts of Continuity (SMS Forwarding, iPhone phone call forwarding), too!**
 
-###To-do list
+### To-do list
 * Bundle some sort of Beam Sync disabler tool (or write my own to be included)
 * Write a script that allows the user to disable Mission Control animations without using the `defaults` command in the Terminal.
 * Integrate `postinst.sh` into the installation process itself.
 * Write an rc.shutdown script that deletes `/System/Library/CoreServices/PlatformSupport.plist` if found. (And if found, replace AppleHDA again.)
-* Get HDA working via DummyHDA instead of outright replacing AppleHDA (difficult, because I believe the AppleHDA binary needs to be modified)
+* Get HDA working without just outright replacing AppleHDA (difficult, because I believe the AppleHDA binary needs to be modified)
 * Fix brightness control
-* Add feature to make Recovery HD usable for MacBook4,1 (very important for 10.11 due to SIPCSP)
+* Add feature to make Recovery HD usable for MacBook4,1 (very important for 10.11 due to SIP)
 * [10.11 only] Fix USB (AppleUSBEHCIPCI)
 
-###How does it perform?
+### How does it perform?
 I actually am currently running OS X Yosemite 10.10.5 as a daily driver on my MacBook4,1. Performance is actually very good. I do recommend that you perform the "Post-installation steps" at the end of my tutorial below for best results.
 
 But anyway, I'm rather satisfied with the performance. Video playback is fine with MPlayerX (or VLC... -shudders-), and web videos (such as YouTube) also decode fine (on both Chrome 46.0.2490.80 and Safari 9.0.1).
@@ -30,7 +30,7 @@ Simpler OpenGL games like VVVVVV and Super Hexagon run at full speed (60 FPS), b
 
 On a slightly entertaining note, Parallels Desktop 11 (running Windows 10) performs decently, too. I actually did not expect this :P
 
-###Okay, so how do I use this?
+### Okay, so how do I use this?
 
 #### Preparing the installer USB
 1. Make sure you have your desired OS X installer downloaded from the App Store and placed in `/Applications/`.

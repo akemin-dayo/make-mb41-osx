@@ -84,7 +84,7 @@
 	# mount basesystem
 	diskutil mount /dev/disk$partnum
 	# rename basesystem
-	diskutil rename "/Volumes/OS X Base System/" "Install $targetOSX"
+	diskutil rename /dev/disk$partnum "Install $targetOSX"
 	# delete ESD symlink
 	rm -f "/Volumes/Install $targetOSX/System/Installation/Packages"
 	# copy ESD packages
