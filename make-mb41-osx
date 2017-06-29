@@ -7,12 +7,12 @@
 	cd "$(dirname "$0")"
 
 	function absolute() {
-		if [ -d "$(dirname "$1")" ]; then
+		if [[ -d "$(dirname "$1")" ]]; then
 			echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 		fi
 	}
 
-	if [ ! -f "payload.tar.gz" ]; then
+	if [[ ! -f "payload.tar.gz" ]]; then
 		echo "\033[31mFATAL ERROR: payload.tar.gz not found! Please re-clone the make-mb41-osx repo.\033[0m"
 		exit 1
 	fi
@@ -49,7 +49,7 @@
 		fi
 	fi
 
-	if [ ! -d "/Applications/Install $targetOSX.app" ]; then
+	if [[ ! -d "/Applications/Install $targetOSX.app" ]]; then
 		echo "\033[31mFATAL ERROR: /Applications/Install $targetOSX.app not found! Please download it from the App Store.\033[0m"
 		exit 1
 	fi
@@ -65,8 +65,7 @@
 	# create fresh gpt map
 	echo "\033[31mWARNING: THIS WILL DESTROY ALL DATA ON /dev/disk$disknum\033[0m"
 	read -p "Are you sure you want to continue? (enter y/n) " -n 1 -r input
-	if [[ $input =~ ^[Yy]$ ]]
-	then
+	if [[ $input =~ ^[Yy]$ ]]; then
 		echo ""
 		continue
 	else
@@ -152,7 +151,7 @@
 	echo "#!/bin/sh
 ls -1 /Volumes/
 read -p \"Enter the name of the disk on which you installed $targetOSX: \" diskname
-if [ ! -d \"/Volumes/\$diskname\" ]; then
+if [[ ! -d \"/Volumes/\$diskname\" ]]; then
 	echo \"\033[31mFATAL ERROR: /Volumes/\$diskname does not seem to exist. Try again.\033[0m\"
 	exit 1
 fi
