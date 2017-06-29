@@ -151,7 +151,7 @@
 	# create postinst.sh
 	echo "#!/bin/sh
 ls -1 /Volumes/
-read -p \"Enter the name of the disk on which you installed $targetOSX:\" diskname
+read -p \"Enter the name of the disk on which you installed $targetOSX: \" diskname
 if [ ! -d \"/Volumes/\$diskname\" ]; then
 	echo \"\033[31mFATAL ERROR: /Volumes/\$diskname does not seem to exist. Try again.\033[0m\"
 	exit 1
