@@ -6,7 +6,7 @@ make-mb41-osx
 * Brightness control — I found the PCI register that controls brightness, but I haven't been able to actually set the brightness yet. Still looking into it.
 * X3100 QECI acceleration — **OS X is still very usable without this, because the X3100 framebuffer still works.** So you will still be able to use change resolutions, external displays, and use all 144MB of VRAM, etc.
 * Display wake from sleep — Sleeping and waking works, but graphics completely fail to re-initialise. Probably something to do with missing QECI acceleration.
-* [10.11 only] USB is completely broken on OS X 10.11. It's an issue with AppleUSBEHCIPCI. Apparently [macosxbootloader](https://github.com/Piker-Alpha/macosxbootloader) works around this on the boot.efi level, should figure out how that works and see if a similar fix will work for the MacBook4,1.
+* [10.11 only] USB support is completely broken on OS X 10.11. Unfortunately, Apple removed support for the UHCI controller used in the ICH7 chipset (found in the MacBook4,1) entirely from OS X 10.11. Another developer seems to have gotten USB working on ICH7 by replacing the 10.11 USB stack with 10.10's, but I'm not too comfortable with this idea. tl;dr: Things don't look good for 10.11 on the MacBook4,1 (● ˃̶͈̀ロ˂̶͈́)੭ꠥ⁾⁾
 
 ### Okay, what works?
 * Well... everything else. :P **This includes FaceTime/iMessage/parts of Continuity (SMS Forwarding, iPhone phone call forwarding), too!**
@@ -19,7 +19,7 @@ make-mb41-osx
 * Get HDA working without just outright replacing AppleHDA (difficult, because I believe the AppleHDA binary needs to be modified)
 * Fix brightness control
 * Add feature to make Recovery HD usable for MacBook4,1 (very important for 10.11 due to SIP)
-* [10.11 only] Fix USB (AppleUSBEHCIPCI)
+* [10.11 only] Find some way to fix USB support on OS X 10.11.
 
 ### How does it perform?
 I actually am currently running OS X Yosemite 10.10.5 as a daily driver on my MacBook4,1. Performance is actually very good. I do recommend that you perform the "Post-installation steps" at the end of my tutorial below for best results.
