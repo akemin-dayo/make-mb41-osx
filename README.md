@@ -33,11 +33,13 @@ On a slightly entertaining note, Parallels Desktop 11 (running Windows 10) perfo
 ### Okay, so how do I use this?
 
 #### Preparing the installer USB
-1. Make sure you have your desired OS X installer downloaded from the App Store and placed in `/Applications/`.
+1. Find a USB flash drive or other storage medium that has **at least 7.5 GB of free space.**
+1. Make sure you have your desired OS X installer downloaded from the App Store and preferably placed in `/Applications/`.
 1. Open Terminal
 1. `git clone https://github.com/angelXwind/make-mb41-osx.git`
 1. `cd make-mb41-osx`
 1. `sudo ./make-mb41-osx 10.10` (or `10.11`, but because USB is broken, there is no point in creating a 10.11 installer with this tool, for now)
+    1. If your OS X installer is not placed in `/Applications/`, you may specify the path to it after the OS X version. For example, `sudo ./make-mb41-osx 10.10 "/Volumes/iODD-2531/macOS Installers/Install OS X 10.10.5 Yosemite.app"`
 1. Enter in the disk number of your USB in the prompt that appears. **WARNING: ALL DATA WILL BE LOST ON THE DISK NUMBER YOU ENTER!**
 1. Sit back, and wait. **Note: During the process, Finder may open the installer USB — this does NOT mean it is complete.**
 1. After it completes, eject the USB and plug into your MacBook4,1.
@@ -56,7 +58,7 @@ On a slightly entertaining note, Parallels Desktop 11 (running Windows 10) perfo
 
 #### Post-installation steps (recommended, but optional)
 1. Set up OS X as you would normally.
-1. To improve performance, I recommend that you disable Beam Sync. A tool written by JasF called BeamOff ([[precompiled binary download]](https://www.sendspace.com/file/sm9sf7), [[source on GitHub]](https://github.com/JasF/beamoff)) can do this for you — just add it as a Login Item and you're golden.
+1. To improve performance, I recommend that you disable Beam Sync. A tool written by JasF called BeamOff ([[precompiled binary download]](https://developer.akemi.ai/macOS/beamoff.zip), [[source on GitHub]](https://github.com/JasF/beamoff)) can do this for you — just add it as a Login Item and you're golden.
 1. To make Mission Control actually usable (and to prevent it from potentially crashing WindowServer), I recommend that you disable its animations. You can do that by pasting this into Terminal: `defaults write com.apple.dock expose-animation-duration -float 0; killall Dock`
 1. Enable "Reduce Transparency" in Settings -> Accessibility.
 
@@ -64,7 +66,7 @@ On a slightly entertaining note, Parallels Desktop 11 (running Windows 10) perfo
 
 * **What's a MacBook4,1?**
     * All of these polycarbonate White/Black MacBooks: http://www.everymac.com/ultimate-mac-lookup/?search_keywords=MacBook4,1
-* **I didn't make it in time to run `postinst.sh` and my MacBook4,1 rebooted into a gray screen with a cross on it! D:**
+* **I didn't make it in time to run `postinst.sh` and my MacBook4,1 rebooted into a gray screen with a cross on it! D;**
     * That's okay, just boot from the USB installer again, and perform those steps again. Your OS X install has not been harmed :P
 * **I updated OS X and now all I see is a gray screen with a cross!**
     * Boot from the USB installer again, and perform the steps pertaining to `postinst.sh` again.
